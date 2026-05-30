@@ -1,0 +1,148 @@
+:root {
+    --brand: #f97316;
+    --brand-hover: #ea580c;
+    
+    /* Light Mode - Soft & Clean */
+    --bg-light: #f1f5f9; /* Slate 100 */
+    --card-light: #ffffff;
+    --text-main-light: #0f172a; /* Slate 900 */
+    --text-muted-light: #475569; /* Slate 600 */
+    --border-light: rgba(0, 0, 0, 0.06);
+    
+    /* Dark Mode - Deep & Premium */
+    --bg-dark: #020617; /* Midnight */
+    --card-dark: #0f172a; /* Slate 900 */
+    --text-main-dark: #f8fafc; /* Slate 50 */
+    --text-muted-dark: #94a3b8; /* Slate 400 */
+    --border-dark: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    background-color: var(--bg-light);
+    color: var(--text-main-light);
+}
+
+.dark body {
+    background-color: var(--bg-dark);
+    color: var(--text-main-dark);
+}
+
+.glass {
+    background: var(--card-light);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+}
+
+.dark .glass {
+    background: var(--card-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Text Utility */
+.text-main { color: var(--text-main-light); }
+.text-muted { color: var(--text-muted-light); }
+.dark .text-main { color: var(--text-main-dark); }
+.dark .text-muted { color: var(--text-muted-dark); }
+
+.orange-glow {
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.1);
+}
+
+.dark .orange-glow {
+    box-shadow: 0 0 40px rgba(249, 115, 22, 0.2);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Persona Styles */
+.persona-critic { color: #ef4444; border-color: #ef4444; }
+.persona-thinker { color: #3b82f6; border-color: #3b82f6; }
+.persona-jester { color: #eab308; border-color: #eab308; }
+.persona-executor { color: #22c55e; border-color: #22c55e; }
+.persona-verifier { color: #a855f7; border-color: #a855f7; }
+
+.bg-persona-critic { background-color: rgba(239, 68, 68, 0.1); }
+.bg-persona-thinker { background-color: rgba(59, 130, 246, 0.1); }
+.bg-persona-jester { background-color: rgba(234, 179, 8, 0.1); }
+.bg-persona-executor { background-color: rgba(34, 197, 94, 0.1); }
+.bg-persona-verifier { background-color: rgba(168, 85, 247, 0.1); }
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+/* Custom Select and Input Styling */
+select, input, textarea {
+    color-scheme: light dark;
+}
+
+.dark select, .dark input, .dark textarea {
+    color-scheme: dark;
+}
+
+/* Customizing the dropdown appearance */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5rem;
+    padding-right: 2.5rem !important;
+}
+
+.dark select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Better looking datalist and select options */
+select option {
+    background-color: var(--card-light);
+    color: var(--text-main-light);
+    padding: 10px;
+}
+
+.dark select option {
+    background-color: var(--card-dark);
+    color: var(--text-main-dark);
+}
+
+/* Smooth Focus Effects */
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+    border-color: var(--brand) !important;
+    transform: translateY(-1px);
+}
+
+/* Custom Scrollbar for dropdowns and containers */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+.active-nav {
+    background-color: rgba(249, 115, 22, 0.1);
+    color: #f97316;
+}
