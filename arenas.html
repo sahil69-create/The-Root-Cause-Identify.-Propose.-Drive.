@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Arenas | The Root Cause</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Join live voice discussions and debates on critical civic reforms in the Arenas.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://therootcause.in/favicon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: '#f97316', darkBg: '#0f172a', darkCard: '#1e293b' } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen">
+    <div id="app" class="relative min-h-screen flex flex-col"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            initPage('arenas');
+            renderArenas();
+        });
+
+        const renderArenas = () => {
+            const container = document.getElementById('page-content');
+            container.innerHTML = `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Live Arenas</h2>
+                    <p class="text-slate-400">Join real-time voice discussions on critical reforms.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    ${state.arenas.map(arena => `
+                        <div class="glass p-6 rounded-3xl border-l-4 border-brand hover:bg-white/5 transition-all cursor-pointer">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="px-2 py-1 rounded-full bg-red-500/20 text-red-500 text-[10px] font-bold flex items-center gap-1 animate-pulse">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> LIVE
+                                </div>
+                                <div class="flex items-center gap-1 text-xs text-slate-400"><i data-lucide="users" class="w-3 h-3"></i> ${arena.listeners} listening</div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">${arena.title}</h3>
+                            <p class="text-sm text-slate-500 mb-6">Hosted by <span class="text-slate-300 font-medium">${arena.host}</span></p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex -space-x-2">
+                                    ${Array.from({length: 4}).map((_, i) => `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${i+arena.id}" class="w-8 h-8 rounded-full border-2 border-darkBg">`).join('')}
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 border-2 border-darkBg flex items-center justify-center text-[10px] font-bold text-slate-400">+${arena.speakers}</div>
+                                </div>
+                                <button onclick="showToast('Joining arena...')" class="bg-brand hover:bg-orange-600 text-white px-6 py-2 rounded-xl font-bold transition-all text-sm">Join Room</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | The Root Cause</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="The Root Cause Dashboard - Stay updated with trending reforms and civic issues.">
+    <meta name="keywords" content="civic tech, dashboard, reforms, India">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://therootcause.in/favicon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: '#f97316', darkBg: '#0f172a', darkCard: '#1e293b' } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen">
+    <div id="app" class="relative min-h-screen flex flex-col">
+        <!-- Layout injected by app.js -->
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            initPage('dashboard');
+            renderFeed('trending');
+        });
+
+        const renderFeed = (filter = 'trending') => {
+            state.currentFilter = filter;
+            const container = document.getElementById('page-content');
+            
+            // Re-sort posts based on filter
+            const sortedPosts = [...state.posts].sort((a, b) => {
+                if (filter === 'trending') return b.votes - a.votes;
+                if (filter === 'recent') {
+                    const timeA = parseInt(a.time) || 0;
+                    const timeB = parseInt(b.time) || 0;
+                    return timeA - timeB; // Lower number means more recent in mock data
+                }
+                return 0;
+            });
+
+            container.innerHTML = `
+                <div class="mb-6 flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold">Your Feed</h2>
+                        <div class="flex gap-2">
+                            <button onclick="renderFeed('trending')" class="px-4 py-2 rounded-full glass text-sm font-medium transition-all ${filter === 'trending' ? 'border-brand text-brand border-2' : 'border-transparent'}">Trending</button>
+                            <button onclick="renderFeed('recent')" class="px-4 py-2 rounded-full glass text-sm font-medium transition-all ${filter === 'recent' ? 'border-brand text-brand border-2' : 'border-transparent'}">Recent</button>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-3xl flex gap-4 items-center">
+                        <div class="w-10 h-10 rounded-full bg-brand/20 flex-shrink-0">
+                            <img src="${state.currentUser.avatar}" class="w-full h-full rounded-full">
+                        </div>
+                        <button onclick="openSubmissionModal()" class="flex-1 text-left px-4 py-2 bg-slate-100 dark:bg-slate-800/50 rounded-xl text-slate-500 dark:text-slate-400 text-sm flex items-center justify-between">
+                            <span>Identify a failure or propose a reform...</span>
+                            <i data-lucide="plus" class="w-5 h-5 text-brand"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="feed-items"></div>
+            `;
+
+            const items = document.getElementById('feed-items');
+            sortedPosts.forEach(post => {
+                const user = state.users.find(u => u.id === post.userId) || state.currentUser;
+                const card = document.createElement('div');
+                card.className = 'glass p-5 rounded-3xl mb-4 hover:border-brand/30 transition-all cursor-pointer group';
+                card.onclick = () => openPost(post.id);
+                
+                card.innerHTML = `
+                    <div class="flex items-start gap-3 mb-4">
+                        <img src="${user.avatar}" class="w-10 h-10 rounded-full border-2 border-brand/20">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold group-hover:underline">${user.name}</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter bg-persona-${user.persona.toLowerCase()} persona-${user.persona.toLowerCase()} border">${user.persona}</span>
+                                ${post.verified ? '<i data-lucide="check-circle" class="w-3.5 h-3.5 text-brand"></i>' : ''}
+                                <span class="text-xs text-slate-500 ml-auto">${post.time}</span>
+                            </div>
+                            <div class="text-xs text-slate-500">${user.location || state.currentUser.city}</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="text-[10px] font-bold text-brand uppercase mb-1">${post.type} • ${post.category}</div>
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-brand transition-colors text-slate-900 dark:text-white">${post.title}</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">${post.desc}</p>
+                    </div>
+                    <div class="flex items-center gap-6 border-t border-slate-100 dark:border-white/5 pt-4">
+                        <div class="flex items-center gap-2">
+                            <button onclick="event.stopPropagation(); upvote(${post.id})" class="p-1.5 hover:bg-brand/20 rounded-lg transition-colors text-slate-600 dark:text-slate-400 hover:text-brand"><i data-lucide="arrow-big-up" class="w-5 h-5"></i></button>
+                            <span class="font-bold text-sm text-slate-900 dark:text-white">${post.votes}</span>
+                            <button onclick="event.stopPropagation(); downvote(${post.id})" class="p-1.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors text-slate-600 dark:text-slate-400"><i data-lucide="arrow-big-down" class="w-5 h-5"></i></button>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="message-square" class="w-4 h-4"></i> <span class="text-sm font-medium">${post.comments}</span></div>
+                    </div>
+                `;
+                items.appendChild(card);
+            });
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
