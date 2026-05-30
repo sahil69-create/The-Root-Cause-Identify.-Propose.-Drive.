@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | The Root Cause</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { brand: '#f97316', darkBg: '#020617', darkCard: '#0f172a' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="max-w-md w-full text-center">
+        <!-- 404 Visual -->
+        <div class="relative mb-8">
+            <h1 class="text-[12rem] font-black leading-none opacity-5 select-none">404</h1>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-24 h-24 bg-brand/10 rounded-3xl flex items-center justify-center animate-bounce">
+                    <i data-lucide="search-x" class="text-brand w-12 h-12"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message -->
+        <h2 class="text-3xl font-bold mb-4">Root Cause Not Found</h2>
+        <p class="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+            The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        </p>
+
+        <!-- Actions -->
+        <div class="space-y-4">
+            <a href="dashboard.html" class="block w-full bg-brand hover:bg-brand-hover text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-brand/20 flex items-center justify-center gap-2">
+                <i data-lucide="home" class="w-5 h-5"></i> Back to Dashboard
+            </a>
+            <button onclick="history.back()" class="block w-full glass hover:bg-slate-100 dark:hover:bg-white/5 font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i> Go Back
+            </button>
+        </div>
+
+        <!-- Support Link -->
+        <p class="mt-12 text-sm text-slate-400">
+            Think this is a mistake? <a href="#" class="text-brand hover:underline">Report a bug</a>
+        </p>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Apply theme based on preference
+        const isDark = localStorage.getItem('trc_theme') === 'dark';
+        if (isDark) document.documentElement.classList.add('dark');
+    </script>
+</body>
+</html>
