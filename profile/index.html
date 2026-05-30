@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | The Root Cause</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="View your civic impact, persona, and recent activity on The Root Cause.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://therootcause.in/favicon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: '#f97316', darkBg: '#0f172a', darkCard: '#1e293b' } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen">
+    <div id="app" class="relative min-h-screen flex flex-col"></div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="glass max-w-md w-full p-8 rounded-3xl relative z-10 animate-slide-up">
+            <h2 class="text-2xl font-bold mb-6">Edit Profile</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1 opacity-70">Display Name</label>
+                    <input type="text" id="edit-displayname" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 opacity-70">State</label>
+                        <select id="edit-state" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white appearance-none">
+                            <option>Delhi</option>
+                            <option>Maharashtra</option>
+                            <option>Karnataka</option>
+                            <option>Uttar Pradesh</option>
+                            <option>Meghalaya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 opacity-70">City</label>
+                        <input type="text" id="edit-city" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 opacity-70">Persona</label>
+                    <select id="edit-persona" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white appearance-none">
+                        <option>Critic</option>
+                        <option>Thinker</option>
+                        <option>Jester</option>
+                        <option>Executor</option>
+                        <option>Verifier</option>
+                    </select>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closeModal()" class="flex-1 px-4 py-3 glass rounded-xl font-bold hover:bg-white/5 transition-colors">Cancel</button>
+                    <button onclick="saveProfile()" class="flex-1 px-4 py-3 bg-brand hover:bg-brand-hover text-white rounded-xl font-bold transition-colors">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const avatarOptions = [
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Oscar',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Mimi',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Jasper',
+            'https://api.dicebear.com/7.x/avataaars/svg?seed=Luna'
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initPage('profile');
+            checkProfileStatus();
+        });
+
+        const checkProfileStatus = () => {
+            const u = state.currentUser;
+            // If profile is incomplete (using dummy values check), show setup
+            if (u.displayName === 'Guest User' || !u.state || !u.city) {
+                renderProfileSetup();
+            } else {
+                renderProfile();
+            }
+        };
+
+        const renderProfileSetup = () => {
+            const container = document.getElementById('page-content');
+            container.innerHTML = `
+                <div class="glass p-8 rounded-3xl animate-slide-up max-w-xl mx-auto">
+                    <h2 class="text-3xl font-black mb-2 text-slate-900 dark:text-white">Complete Your Profile</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mb-8 font-medium">Almost there! Customize your identity on The Root Cause.</p>
+                    
+                    <div class="space-y-6">
+                        <!-- Avatar Selection -->
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-4">Choose Your Avatar</label>
+                            <div class="grid grid-cols-3 md:grid-cols-6 gap-4" id="avatar-grid">
+                                ${avatarOptions.map((src, i) => `
+                                    <div onclick="selectAvatar(${i})" class="avatar-option cursor-pointer rounded-full border-4 border-transparent hover:border-brand transition-all overflow-hidden ${i === 0 ? 'selected-avatar ring-4 ring-brand' : ''}">
+                                        <img src="${src}" class="w-full h-full">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Display Name</label>
+                            <input type="text" id="setup-displayname" placeholder="E.g. Civic Ranger" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5 rounded-xl p-4 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">State / UT</label>
+                                <select id="setup-state" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5 rounded-xl p-4 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white cursor-pointer transition-all">
+                                    <option value="" disabled selected>Select State</option>
+                                    <option>Delhi</option><option>Maharashtra</option><option>Karnataka</option><option>Uttar Pradesh</option><option>Tamil Nadu</option><option>West Bengal</option>
+                                    <option>Gujarat</option><option>Rajasthan</option><option>Punjab</option><option>Kerala</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">City</label>
+                                <input type="text" id="setup-city" list="cities-setup" placeholder="Enter City" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5 rounded-xl p-4 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white">
+                                <datalist id="cities-setup"></datalist>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Your Persona</label>
+                            <select id="setup-persona" class="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5 rounded-xl p-4 focus:ring-2 focus:ring-brand outline-none text-slate-900 dark:text-white cursor-pointer transition-all">
+                                <option>Critic</option><option>Thinker</option><option>Jester</option><option>Executor</option><option>Verifier</option>
+                            </select>
+                        </div>
+
+                        <button onclick="saveSetup()" class="w-full bg-brand hover:bg-brand-hover text-white py-4 rounded-xl font-bold transition-all transform hover:scale-[1.02] shadow-xl shadow-brand/20 mt-4">
+                            Go to Dashboard
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add city search logic
+            const cityInput = document.getElementById('setup-city');
+            const citiesDatalist = document.getElementById('cities-setup');
+            if (cityInput) {
+                cityInput.addEventListener('input', (e) => {
+                    const val = e.target.value.toLowerCase();
+                    citiesDatalist.innerHTML = '';
+                    if (val.length > 0) {
+                        const matches = indianCities.filter(c => c.toLowerCase().startsWith(val)).sort().slice(0, 10);
+                        matches.forEach(city => {
+                            const opt = document.createElement('option');
+                            opt.value = city;
+                            citiesDatalist.appendChild(opt);
+                        });
+                    }
+                });
+            }
+        };
+
+        let selectedAvatarUrl = avatarOptions[0];
+
+        const selectAvatar = (index) => {
+            selectedAvatarUrl = avatarOptions[index];
+            document.querySelectorAll('.avatar-option').forEach((el, i) => {
+                if (i === index) {
+                    el.classList.add('selected-avatar', 'ring-4', 'ring-brand');
+                } else {
+                    el.classList.remove('selected-avatar', 'ring-4', 'ring-brand');
+                }
+            });
+        };
+
+        const saveSetup = () => {
+            const displayName = document.getElementById('setup-displayname').value;
+            const stateVal = document.getElementById('setup-state').value;
+            const cityVal = document.getElementById('setup-city').value;
+            const personaVal = document.getElementById('setup-persona').value;
+
+            if (!displayName || !stateVal || !cityVal) {
+                showToast('Please fill all fields');
+                return;
+            }
+
+            state.currentUser = {
+                ...state.currentUser,
+                displayName: displayName,
+                state: stateVal,
+                city: cityVal,
+                persona: personaVal,
+                avatar: selectedAvatarUrl
+            };
+
+            localStorage.setItem('trc_user', JSON.stringify(state.currentUser));
+            showToast('Profile completed!');
+            setTimeout(() => {
+                window.location.href = '../dashboard/';
+            }, 1000);
+        };
+
+        const renderProfile = () => {
+            const container = document.getElementById('page-content');
+            const u = state.currentUser;
+            container.innerHTML = `
+                <div class="glass rounded-3xl overflow-hidden mb-6">
+                    <div class="h-32 bg-gradient-to-r from-brand to-orange-400"></div>
+                    <div class="px-6 pb-6 relative">
+                        <div class="absolute -top-12 left-6"><img src="${u.avatar}" class="w-24 h-24 rounded-full border-4 border-darkBg"></div>
+                        <div class="pt-16 flex justify-between items-start">
+                            <div><h2 class="text-2xl font-bold text-slate-900 dark:text-white">${u.displayName}</h2><p class="text-slate-500 dark:text-slate-400">@${u.username}</p></div>
+                            <button onclick="openEditProfile()" class="px-4 py-2 glass rounded-xl text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-slate-900 dark:text-white">Edit Profile</button>
+                        </div>
+                        <div class="mt-4 flex flex-wrap gap-4 text-sm">
+                            <div class="flex items-center gap-1 text-slate-400"><i data-lucide="map-pin" class="w-4 h-4"></i> ${u.city}, ${u.state}</div>
+                            <div class="flex items-center gap-1 text-slate-400"><i data-lucide="calendar" class="w-4 h-4"></i> Joined ${u.joinDate}</div>
+                            <div class="flex items-center gap-1 font-bold persona-${u.persona.toLowerCase()}"><i data-lucide="${personas[u.persona]?.icon || 'user'}" class="w-4 h-4"></i> ${u.persona}</div>
+                        </div>
+                        <div class="mt-8 flex gap-8">
+                            <div><div class="font-black text-xl">${u.points}</div><div class="text-xs text-slate-500 font-bold uppercase">Impact</div></div>
+                            <div><div class="font-black text-xl">${u.posts}</div><div class="text-xs text-slate-500 font-bold uppercase">Posts</div></div>
+                            <div><div class="font-black text-xl">${u.upvotes}</div><div class="text-xs text-slate-500 font-bold uppercase">Upvotes</div></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-4 px-2">Recent Activity</h3>
+                <div class="space-y-4">
+                    ${state.posts.filter(p => p.userId === 1).slice(0, 3).map(post => `
+                        <div class="glass p-4 rounded-2xl opacity-70">
+                            <div class="text-[10px] font-bold text-brand uppercase mb-1">${post.type}</div>
+                            <div class="font-bold">${post.title}</div>
+                            <div class="text-xs text-slate-500 mt-2">${post.time} • ${post.votes} votes</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
