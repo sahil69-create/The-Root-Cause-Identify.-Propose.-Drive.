@@ -121,11 +121,22 @@ const generateData = () => {
     }));
 };
 
+// --- Helper for Navigation Paths ---
+const getNavPath = (page) => {
+    const path = window.location.pathname;
+    const isSubfolder = path.includes('/dashboard/') || path.includes('/arenas/') || 
+                        path.includes('/quests/') || path.includes('/leaderboard/') || 
+                        path.includes('/profile/') || path.includes('/error/');
+    
+    if (page === 'index') return isSubfolder ? '../' : './';
+    return isSubfolder ? `../${page}/` : `${page}/`;
+};
+
 // --- Common UI Components ---
 const components = {
     navbar: () => `
         <nav class="sticky top-0 z-50 glass border-b border-white/10 px-4 md:px-8 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='dashboard.html'">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='${getNavPath('dashboard')}'">
                 <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center">
                     <i data-lucide="root" class="text-white w-6 h-6"></i>
                 </div>
@@ -141,7 +152,7 @@ const components = {
                 <button onclick="toggleDarkMode()" class="p-2 rounded-xl hover:bg-white/10 transition-colors">
                     <i data-lucide="${state.isDarkMode ? 'moon' : 'sun'}" id="theme-icon" class="w-5 h-5"></i>
                 </button>
-                <div class="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center cursor-pointer overflow-hidden border-2 border-brand" onclick="window.location.href='profile.html'">
+                <div class="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center cursor-pointer overflow-hidden border-2 border-brand" onclick="window.location.href='${getNavPath('profile')}'">
                     <img id="nav-avatar" src="${state.currentUser.avatar}" alt="Avatar">
                 </div>
             </div>
@@ -149,18 +160,21 @@ const components = {
     `,
     sidebarLeft: (activePage) => `
         <aside class="hidden lg:flex flex-col gap-2 w-64 sticky top-24 self-start">
-            <a href="dashboard.html" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'dashboard' ? 'active-nav' : ''}">
+            <a href="${getNavPath('dashboard')}" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'dashboard' ? 'active-nav' : ''}">
                 <i data-lucide="home" class="w-5 h-5"></i> Dashboard
             </a>
-            <a href="arenas.html" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'arenas' ? 'active-nav' : ''}">
+            <a href="${getNavPath('arenas')}" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'arenas' ? 'active-nav' : ''}">
                 <i data-lucide="mic-2" class="w-5 h-5"></i> Live Arenas
             </a>
-            <a href="quests.html" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'quests' ? 'active-nav' : ''}">
+            <a href="${getNavPath('quests')}" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'quests' ? 'active-nav' : ''}">
                 <i data-lucide="sword" class="w-5 h-5"></i> Civic Quests
             </a>
-            <a href="leaderboard.html" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'leaderboard' ? 'active-nav' : ''}">
+            <a href="${getNavPath('leaderboard')}" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-brand/10 hover:text-brand transition-all font-medium ${activePage === 'leaderboard' ? 'active-nav' : ''}">
                 <i data-lucide="trophy" class="w-5 h-5"></i> Leaderboard
             </a>
+            <button onclick="logout()" class="nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-red-500/10 hover:text-red-500 transition-all font-medium mt-auto">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            </button>
             <div class="my-4 border-t border-white/5"></div>
             <p class="text-xs font-bold text-slate-500 px-3 mb-2 uppercase tracking-wider">My Subscriptions</p>
             <div class="space-y-1">
@@ -188,22 +202,22 @@ const components = {
     `,
     mobileNav: (activePage) => `
         <nav class="md:hidden fixed bottom-0 left-0 right-0 glass border-t border-white/10 flex justify-around items-center p-3 z-50">
-            <a href="dashboard.html" class="flex flex-col items-center gap-1 ${activePage === 'dashboard' ? 'text-brand' : 'text-slate-400'}">
+            <a href="${getNavPath('dashboard')}" class="flex flex-col items-center gap-1 ${activePage === 'dashboard' ? 'text-brand' : 'text-slate-400'}">
                 <i data-lucide="home" class="w-6 h-6"></i>
                 <span class="text-[10px]">Home</span>
             </a>
-            <a href="arenas.html" class="flex flex-col items-center gap-1 ${activePage === 'arenas' ? 'text-brand' : 'text-slate-400'}">
+            <a href="${getNavPath('arenas')}" class="flex flex-col items-center gap-1 ${activePage === 'arenas' ? 'text-brand' : 'text-slate-400'}">
                 <i data-lucide="mic-2" class="w-6 h-6"></i>
                 <span class="text-[10px]">Arenas</span>
             </a>
-            <a href="quests.html" class="flex flex-col items-center gap-1 ${activePage === 'quests' ? 'text-brand' : 'text-slate-400'}">
+            <a href="${getNavPath('quests')}" class="flex flex-col items-center gap-1 ${activePage === 'quests' ? 'text-brand' : 'text-slate-400'}">
                 <i data-lucide="sword" class="w-10 h-10 text-brand"></i>
             </a>
-            <a href="leaderboard.html" class="flex flex-col items-center gap-1 ${activePage === 'leaderboard' ? 'text-brand' : 'text-slate-400'}">
+            <a href="${getNavPath('leaderboard')}" class="flex flex-col items-center gap-1 ${activePage === 'leaderboard' ? 'text-brand' : 'text-slate-400'}">
                 <i data-lucide="trophy" class="w-6 h-6"></i>
                 <span class="text-[10px]">Board</span>
             </a>
-            <a href="profile.html" class="flex flex-col items-center gap-1 ${activePage === 'profile' ? 'text-brand' : 'text-slate-400'}">
+            <a href="${getNavPath('profile')}" class="flex flex-col items-center gap-1 ${activePage === 'profile' ? 'text-brand' : 'text-slate-400'}">
                 <i data-lucide="user" class="w-6 h-6"></i>
                 <span class="text-[10px]">Profile</span>
             </a>
@@ -231,6 +245,14 @@ const applyTheme = () => {
         icon.setAttribute('data-lucide', state.isDarkMode ? 'moon' : 'sun');
         lucide.createIcons();
     }
+};
+
+const logout = () => {
+    localStorage.removeItem('trc_user');
+    showToast('Logging out...');
+    setTimeout(() => {
+        window.location.href = getNavPath('index');
+    }, 1000);
 };
 
 const showToast = (msg) => {
