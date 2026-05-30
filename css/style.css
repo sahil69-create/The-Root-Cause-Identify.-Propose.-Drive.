@@ -142,6 +142,164 @@ input:focus, select:focus, textarea:focus {
     background: #334155;
 }
 
+/* From Uiverse.io by Yaya12085 */ 
+ .form-container { 
+   width: 320px; 
+   border-radius: 0.75rem; 
+   background-color: var(--card-dark); 
+   padding: 2rem; 
+   color: rgba(243, 244, 246, 1);
+   border: 1px solid var(--border-dark);
+   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+ } 
+
+ .light .form-container {
+    background-color: var(--card-light);
+    color: var(--text-main-light);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+ }
+ 
+ .title { 
+   text-align: center; 
+   font-size: 1.5rem; 
+   line-height: 2rem; 
+   font-weight: 700; 
+ } 
+ 
+ .form { 
+   margin-top: 1.5rem; 
+ } 
+ 
+ .input-group { 
+   margin-top: 0.25rem; 
+   font-size: 0.875rem; 
+   line-height: 1.25rem; 
+ } 
+ 
+ .input-group label { 
+   display: block; 
+   color: rgba(156, 163, 175, 1); 
+   margin-bottom: 4px; 
+ } 
+ 
+ .input-group input { 
+   width: 100%; 
+   border-radius: 0.375rem; 
+   border: 1px solid rgba(55, 65, 81, 1); 
+   outline: 0; 
+   background-color: rgba(17, 24, 39, 1); 
+   padding: 0.75rem 1rem; 
+   color: rgba(243, 244, 246, 1); 
+ } 
+
+ .light .input-group input {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+ }
+ 
+ .input-group input:focus { 
+   border-color: var(--brand); 
+ } 
+ 
+ .forgot { 
+   display: flex; 
+   justify-content: flex-end; 
+   font-size: 0.75rem; 
+   line-height: 1rem; 
+   color: rgba(156, 163, 175,1); 
+   margin: 8px 0 14px 0; 
+ } 
+ 
+ .forgot a,.signup a { 
+   color: var(--brand); 
+   text-decoration: none; 
+   font-size: 14px; 
+ } 
+ 
+ .forgot a:hover, .signup a:hover { 
+   text-decoration: underline; 
+ } 
+ 
+ .sign { 
+   display: block; 
+   width: 100%; 
+   background-color: var(--brand); 
+   margin-top: 1rem;
+   padding: 0.75rem; 
+   text-align: center; 
+   color: white; 
+   border: none; 
+   border-radius: 0.375rem; 
+   font-weight: 600; 
+   cursor: pointer;
+   transition: all 0.3s ease;
+ } 
+
+ .sign:hover {
+    background-color: var(--brand-hover);
+    transform: translateY(-1px);
+ }
+ 
+ .social-message { 
+   display: flex; 
+   align-items: center; 
+   padding-top: 1rem; 
+ } 
+ 
+ .line { 
+   height: 1px; 
+   flex: 1 1 0%; 
+   background-color: rgba(55, 65, 81, 1); 
+ } 
+ 
+ .social-message .message { 
+   padding-left: 0.75rem; 
+   padding-right: 0.75rem; 
+   font-size: 0.875rem; 
+   line-height: 1.25rem; 
+   color: rgba(156, 163, 175, 1); 
+ } 
+ 
+ .social-icons { 
+   display: flex; 
+   justify-content: center; 
+ } 
+ 
+ .social-icons .icon { 
+   border-radius: 0.125rem; 
+   padding: 0.75rem; 
+   border: none; 
+   background-color: transparent; 
+   margin-left: 8px; 
+   cursor: pointer;
+   transition: all 0.3s ease;
+ } 
+
+ .social-icons .icon:hover {
+    background-color: rgba(249, 115, 22, 0.1);
+    transform: scale(1.1);
+ }
+ 
+ .social-icons .icon svg { 
+   height: 1.25rem; 
+   width: 1.25rem; 
+   fill: #fff; 
+ } 
+
+ .light .social-icons .icon svg {
+    fill: var(--text-main-light);
+ }
+ 
+ .signup { 
+   text-align: center; 
+   font-size: 0.75rem; 
+   line-height: 1rem; 
+   color: rgba(156, 163, 175, 1); 
+   margin-top: 1rem;
+ }
+
 .active-nav {
     background-color: rgba(249, 115, 22, 0.1);
     color: #f97316;
