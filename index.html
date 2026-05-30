@@ -45,223 +45,201 @@
 <body class="bg-slate-50 dark:bg-darkBg text-slate-900 dark:text-slate-100 min-h-screen">
 
     <div id="onboarding-view" class="flex items-center justify-center min-h-screen p-4">
-        <!-- Login Step -->
-        <div id="step-login" class="max-w-md w-full glass p-8 rounded-3xl orange-glow animate-slide-up">
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4">
-                    <i data-lucide="root" class="text-white w-8 h-8"></i>
+        <!-- Login Container -->
+        <div id="step-login" class="form-container animate-slide-up">
+            <p class="title">Login</p>
+            <form class="form" onsubmit="event.preventDefault(); startVerification('login');">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="" required>
                 </div>
-                <h1 class="text-3xl font-bold mb-2">The Root Cause</h1>
-                <p class="text-slate-500 dark:text-slate-400">Identify Failures. Propose Reforms. Drive Action.</p>
-            </div>
-            <div class="space-y-4">
-                <button id="google-login-btn" onclick="handleGoogleLogin()" class="w-full flex items-center justify-center gap-3 bg-white text-slate-900 font-semibold py-3 px-4 rounded-xl hover:bg-slate-100 transition-all border border-slate-200 relative overflow-hidden group">
-                    <span id="login-text" class="flex items-center gap-3">
-                        <i data-lucide="chrome" class="w-5 h-5 text-red-500"></i> Continue with Google
-                    </span>
-                    <div id="login-loader" class="hidden animate-spin">
-                        <i data-lucide="loader-2" class="w-5 h-5 text-brand"></i>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="" required>
+                    <div class="forgot">
+                        <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                     </div>
+                </div>
+                <button type="submit" class="sign">Sign in</button>
+            </form>
+            <div class="social-message">
+                <div class="line"></div>
+                <p class="message">Login with social accounts</p>
+                <div class="line"></div>
+            </div>
+            <div class="social-icons">
+                <button aria-label="Log in with Google" class="icon" onclick="handleGoogleLogin()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-5 h-5 fill-current">
+                        <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
+                    </svg>
                 </button>
-                <button onclick="skipDemo()" class="w-full text-slate-500 dark:text-slate-400 hover:text-brand transition-colors font-medium py-2">
-                    Skip Demo
+                <button aria-label="Log in with Twitter" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-5 h-5 fill-current">
+                        <path d="M31.937 6.093c-1.177 0.516-2.437 0.871-3.765 1.032 1.355-0.813 2.391-2.099 2.885-3.631-1.271 0.74-2.677 1.276-4.172 1.579-1.192-1.276-2.896-2.079-4.787-2.079-3.625 0-6.563 2.937-6.563 6.557 0 0.521 0.063 1.021 0.172 1.495-5.453-0.255-10.287-2.875-13.52-6.833-0.568 0.964-0.891 2.084-0.891 3.303 0 2.281 1.161 4.281 2.916 5.457-1.073-0.031-2.083-0.328-2.968-0.817v0.079c0 3.181 2.26 5.833 5.26 6.437-0.547 0.145-1.131 0.229-1.724 0.229-0.421 0-0.823-0.041-1.224-0.115 0.844 2.604 3.26 4.5 6.14 4.557-2.239 1.755-5.077 2.801-8.135 2.801-0.521 0-1.041-0.025-1.563-0.088 2.917 1.86 6.36 2.948 10.079 2.948 12.067 0 18.661-9.995 18.661-18.651 0-0.276 0-0.557-0.021-0.839 1.287-0.917 2.401-2.079 3.281-3.396z"></path>
+                    </svg>
                 </button>
             </div>
+            <p class="signup">Don't have an account?
+                <a rel="noopener noreferrer" href="javascript:void(0)" onclick="toggleAuth('signup')">Sign up</a>
+            </p>
         </div>
 
-        <!-- Profile Setup Step -->
-        <div id="step-profile" class="hidden max-w-md w-full glass p-8 rounded-3xl animate-slide-up">
-            <h2 class="text-2xl font-bold mb-6">Create your identity</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1 opacity-70">Username</label>
-                    <input type="text" id="input-username" placeholder="@citizen_x" class="w-full bg-slate-200 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none">
+        <!-- Sign Up Container -->
+        <div id="step-signup" class="form-container animate-slide-up hidden">
+            <p class="title">Create Account</p>
+            <form class="form" onsubmit="event.preventDefault(); startVerification('signup');">
+                <div class="input-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="text" name="reg-email" id="reg-email" placeholder="" required>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 opacity-70">Display Name</label>
-                    <input type="text" id="input-displayname" placeholder="John Doe" class="w-full bg-slate-200 dark:bg-slate-800 border-none rounded-xl p-3 focus:ring-2 focus:ring-brand outline-none">
+                <div class="input-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" name="reg-username" id="reg-username" placeholder="" required>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1 opacity-70">State / UT</label>
-                        <select id="input-state" class="w-full bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand rounded-xl p-3 focus:ring-2 focus:ring-brand/20 outline-none cursor-pointer text-slate-900 dark:text-white transition-all duration-300">
-                            <option value="" disabled selected>Select State</option>
-                            <option>Andhra Pradesh</option>
-                            <option>Arunachal Pradesh</option>
-                            <option>Assam</option>
-                            <option>Bihar</option>
-                            <option>Chhattisgarh</option>
-                            <option>Goa</option>
-                            <option>Gujarat</option>
-                            <option>Haryana</option>
-                            <option>Himachal Pradesh</option>
-                            <option>Jharkhand</option>
-                            <option>Karnataka</option>
-                            <option>Kerala</option>
-                            <option>Madhya Pradesh</option>
-                            <option>Maharashtra</option>
-                            <option>Manipur</option>
-                            <option>Meghalaya</option>
-                            <option>Mizoram</option>
-                            <option>Nagaland</option>
-                            <option>Odisha</option>
-                            <option>Punjab</option>
-                            <option>Rajasthan</option>
-                            <option>Sikkim</option>
-                            <option>Tamil Nadu</option>
-                            <option>Telangana</option>
-                            <option>Tripura</option>
-                            <option>Uttar Pradesh</option>
-                            <option>Uttarakhand</option>
-                            <option>West Bengal</option>
-                            <option disabled>--- Union Territories ---</option>
-                            <option>Andaman and Nicobar Islands</option>
-                            <option>Chandigarh</option>
-                            <option>Dadra and Nagar Haveli and Daman and Diu</option>
-                            <option>Lakshadweep</option>
-                            <option>Delhi</option>
-                            <option>Puducherry</option>
-                            <option>Ladakh</option>
-                            <option>Jammu and Kashmir</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 opacity-70">City</label>
-                        <input type="text" id="input-city" list="cities-list" placeholder="Search City..." class="w-full bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-brand rounded-xl p-3 focus:ring-2 focus:ring-brand/20 outline-none text-slate-900 dark:text-white transition-all duration-300">
-                        <datalist id="cities-list"></datalist>
-                    </div>
+                <div class="input-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" name="reg-password" id="reg-password" placeholder="" required>
                 </div>
-                <button onclick="nextStep('step-persona')" class="w-full bg-brand hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl transition-colors mt-4">
-                    Next: Choose Persona
+                <button type="submit" class="sign">Create Account</button>
+            </form>
+            <div class="social-message">
+                <div class="line"></div>
+                <p class="message">Sign up with social accounts</p>
+                <div class="line"></div>
+            </div>
+            <div class="social-icons">
+                <button aria-label="Sign up with Google" class="icon" onclick="handleGoogleLogin()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-5 h-5 fill-current">
+                        <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
+                    </svg>
+                </button>
+                <button aria-label="Sign up with Twitter" class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-5 h-5 fill-current">
+                        <path d="M31.937 6.093c-1.177 0.516-2.437 0.871-3.765 1.032 1.355-0.813 2.391-2.099 2.885-3.631-1.271 0.74-2.677 1.276-4.172 1.579-1.192-1.276-2.896-2.079-4.787-2.079-3.625 0-6.563 2.937-6.563 6.557 0 0.521 0.063 1.021 0.172 1.495-5.453-0.255-10.287-2.875-13.52-6.833-0.568 0.964-0.891 2.084-0.891 3.303 0 2.281 1.161 4.281 2.916 5.457-1.073-0.031-2.083-0.328-2.968-0.817v0.079c0 3.181 2.26 5.833 5.26 6.437-0.547 0.145-1.131 0.229-1.724 0.229-0.421 0-0.823-0.041-1.224-0.115 0.844 2.604 3.26 4.5 6.14 4.557-2.239 1.755-5.077 2.801-8.135 2.801-0.521 0-1.041-0.025-1.563-0.088 2.917 1.86 6.36 2.948 10.079 2.948 12.067 0 18.661-9.995 18.661-18.651 0-0.276 0-0.557-0.021-0.839 1.287-0.917 2.401-2.079 3.281-3.396z"></path>
+                    </svg>
                 </button>
             </div>
+            <p class="signup">Already have an account?
+                <a rel="noopener noreferrer" href="javascript:void(0)" onclick="toggleAuth('login')">Sign in</a>
+            </p>
         </div>
 
-        <!-- Persona Step -->
-        <div id="step-persona" class="hidden max-w-2xl w-full glass p-8 rounded-3xl animate-slide-up">
-            <h2 class="text-2xl font-bold mb-2 text-center">Choose your Persona</h2>
-            <p class="text-slate-500 dark:text-slate-400 text-center mb-8">How will you contribute to the movement?</p>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <div onclick="selectPersona('Critic')" class="persona-card cursor-pointer p-4 rounded-2xl border-2 border-transparent hover:border-red-500 bg-red-500/10 text-center transition-all">
-                    <i data-lucide="zap" class="w-8 h-8 mx-auto mb-2 text-red-500"></i>
-                    <h3 class="font-bold text-red-500">Critic</h3>
+        <!-- OTP Verification Container -->
+        <div id="step-otp" class="form-container animate-slide-up hidden">
+            <p class="title">Verify OTP</p>
+            <p class="text-xs text-center text-slate-500 mt-2">A 6-digit code has been sent to your device.</p>
+            <form class="form" onsubmit="event.preventDefault(); completeVerification();">
+                <div class="input-group">
+                    <label for="otp-code">Enter Code</label>
+                    <input type="text" id="otp-code" maxlength="6" placeholder="000000" class="text-center tracking-[1em] font-bold text-xl" required>
                 </div>
-                <div onclick="selectPersona('Thinker')" class="persona-card cursor-pointer p-4 rounded-2xl border-2 border-transparent hover:border-blue-500 bg-blue-500/10 text-center transition-all">
-                    <i data-lucide="brain" class="w-8 h-8 mx-auto mb-2 text-blue-500"></i>
-                    <h3 class="font-bold text-blue-500">Thinker</h3>
-                </div>
-                <div onclick="selectPersona('Jester')" class="persona-card cursor-pointer p-4 rounded-2xl border-2 border-transparent hover:border-yellow-500 bg-yellow-500/10 text-center transition-all">
-                    <i data-lucide="laugh" class="w-8 h-8 mx-auto mb-2 text-yellow-500"></i>
-                    <h3 class="font-bold text-yellow-500">Jester</h3>
-                </div>
-                <div onclick="selectPersona('Executor')" class="persona-card cursor-pointer p-4 rounded-2xl border-2 border-transparent hover:border-green-500 bg-green-500/10 text-center transition-all">
-                    <i data-lucide="hammer" class="w-8 h-8 mx-auto mb-2 text-green-500"></i>
-                    <h3 class="font-bold text-green-500">Executor</h3>
-                </div>
-                <div onclick="selectPersona('Verifier')" class="persona-card cursor-pointer p-4 rounded-2xl border-2 border-transparent hover:border-purple-500 bg-purple-500/10 text-center transition-all">
-                    <i data-lucide="shield-check" class="w-8 h-8 mx-auto mb-2 text-purple-500"></i>
-                    <h3 class="font-bold text-purple-500">Verifier</h3>
-                </div>
-            </div>
+                <button type="submit" class="sign mt-4">Verify & Continue</button>
+            </form>
+            <p class="signup mt-4">Didn't receive code?
+                <a rel="noopener noreferrer" href="javascript:void(0)" onclick="showToast('OTP resent!')">Resend</a>
+            </p>
         </div>
     </div>
 
     <script src="js/app.js"></script>
     <script>
-        const handleGoogleLogin = () => {
-            const btn = document.getElementById('google-login-btn');
-            const text = document.getElementById('login-text');
-            const loader = document.getElementById('login-loader');
+        const toggleAuth = (type) => {
+            const login = document.getElementById('step-login');
+            const signup = document.getElementById('step-signup');
+            const otp = document.getElementById('step-otp');
             
-            // Simulation
-            btn.disabled = true;
-            text.classList.add('hidden');
-            loader.classList.remove('hidden');
-            
+            login.classList.add('hidden');
+            signup.classList.add('hidden');
+            otp.classList.add('hidden');
+
+            if (type === 'signup') {
+                signup.classList.remove('hidden');
+            } else if (type === 'otp') {
+                otp.classList.remove('hidden');
+            } else {
+                login.classList.remove('hidden');
+            }
+        };
+
+        const startVerification = (source) => {
+            // Get values based on source
+            let username = '';
+            if (source === 'login') {
+                username = document.getElementById('username').value;
+            } else {
+                username = document.getElementById('reg-username').value;
+            }
+
+            if (!username) {
+                showToast('Please fill all fields');
+                return;
+            }
+
+            // Mock saving partial data
+            const tempUser = { username: username };
+            localStorage.setItem('trc_temp_user', JSON.stringify(tempUser));
+
+            showToast('Sending OTP...');
             setTimeout(() => {
-                // Mock user data from Google
-                const googleUser = {
-                    username: 'google_citizen',
-                    displayName: 'Google Explorer',
-                    state: 'Delhi',
-                    city: 'New Delhi',
-                    persona: 'Thinker',
-                    points: 500,
-                    posts: 2,
-                    upvotes: 120,
-                    joinDate: 'May 2026',
-                    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=GoogleUser'
-                };
-                localStorage.setItem('trc_user', JSON.stringify(googleUser));
-                
-                // Transition to profile setup with pre-filled data or skip to persona
-                nextStep('step-profile');
-                
-                // Pre-fill profile fields
-                document.getElementById('input-username').value = googleUser.username;
-                document.getElementById('input-displayname').value = googleUser.displayName;
-                
-                // Re-enable for next time if needed
-                btn.disabled = false;
-                text.classList.remove('hidden');
-                loader.classList.add('hidden');
-                lucide.createIcons();
-            }, 1500);
+                toggleAuth('otp');
+            }, 800);
         };
 
-        const nextStep = (stepId) => {
-            document.querySelectorAll('#onboarding-view > div').forEach(div => div.classList.add('hidden'));
-            document.getElementById(stepId).classList.remove('hidden');
-        };
+        const completeVerification = () => {
+            const otp = document.getElementById('otp-code').value;
+            if (otp.length < 6) {
+                showToast('Please enter valid 6-digit OTP');
+                return;
+            }
 
-        const skipDemo = () => {
-            window.location.href = 'dashboard.html';
-        };
-
-        const selectPersona = (p) => {
-            const user = {
-                username: document.getElementById('input-username').value || 'citizen_x',
-                displayName: document.getElementById('input-displayname').value || 'New Citizen',
-                state: document.getElementById('input-state').value,
-                city: document.getElementById('input-city').value || 'Mumbai',
-                persona: p,
+            const tempUser = JSON.parse(localStorage.getItem('trc_temp_user')) || { username: 'citizen_x' };
+            const finalUser = {
+                ...tempUser,
+                displayName: 'Guest User',
                 points: 0,
                 posts: 0,
                 upvotes: 0,
                 joinDate: 'May 2026',
-                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}`
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${tempUser.username}`
             };
-            localStorage.setItem('trc_user', JSON.stringify(user));
-            window.location.href = 'dashboard.html';
+            
+            localStorage.setItem('trc_user', JSON.stringify(finalUser));
+            localStorage.removeItem('trc_temp_user');
+
+            showToast('Verification successful!');
+            setTimeout(() => {
+                window.location.href = 'profile/';
+            }, 1000);
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            applyTheme();
-
-            // Dynamic City Search Logic
-            const cityInput = document.getElementById('input-city');
-            const citiesDatalist = document.getElementById('cities-list');
-
-            cityInput.addEventListener('input', (e) => {
-                const val = e.target.value.toLowerCase();
-                citiesDatalist.innerHTML = ''; // Clear current options
-
-                if (val.length > 0) {
-                    // Filter and Sort cities
-                    const matches = indianCities
-                        .filter(city => city.toLowerCase().startsWith(val))
-                        .sort((a, b) => a.localeCompare(b));
-
-                    // Populate datalist
-                    matches.forEach(city => {
-                        const option = document.createElement('option');
-                        option.value = city;
-                        citiesDatalist.appendChild(option);
-                    });
-                }
-            });
-        });
-    </script>
+        const handleGoogleLogin = () => {
+             showToast('Signing in with Google...');
+             setTimeout(() => {
+                 const googleUser = {
+                     username: 'google_citizen',
+                     displayName: 'Google Explorer',
+                     points: 500,
+                     posts: 2,
+                     upvotes: 120,
+                     joinDate: 'May 2026',
+                     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=GoogleUser'
+                 };
+                 localStorage.setItem('trc_user', JSON.stringify(googleUser));
+                 showToast('Login successful!');
+                 setTimeout(() => {
+                     window.location.href = 'profile/';
+                 }, 1000);
+             }, 1500);
+         };
+ 
+         const skipDemo = () => {
+             window.location.href = 'dashboard/';
+         };
+ 
+         window.addEventListener('DOMContentLoaded', () => {
+             lucide.createIcons();
+             applyTheme();
+         });
+     </script>
 </body>
 </html>
